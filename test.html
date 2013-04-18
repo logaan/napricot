@@ -9,12 +9,28 @@
       body.appendChild(napricot.render(data));
     }
 
+    // Perfect
+    test(["a", {href: "#"}, {children: ["link"]}]);
+
+    // Without children in a list
     test(["a", {href: "#"}, "link"]);
+
+    // Without attributes
+    test(["p", {children: ["paragraph"]}]);
+
+    // Without attributes or children in a list
     test(["p", "paragraph"]);
+
+    // Without attributes or children
     test(["hr"]);
 
-    test(["p", ["a", {href: "#"}, "link in paragraph"]]);
+    // Nested
     test(["p", {id: "foo"}, ["a", {href: "#"}, "link in id paragraph"]]);
+
+    // Nested without attr
+    test(["p", ["a", {href: "#"}, "link in paragraph"]]);
+
+    // Nested with attr, child no attr
     test(["p", {id: "foo"}, ["span", "span in paragraph"]]);
   </script>
 </body>

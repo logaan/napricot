@@ -4,17 +4,16 @@ napricot = (function() {
   function renderPerfectElement(data) {
     var type = data[0];
     var attributes = data[1];
-    var content = data[2];
+    var children = data[2].children;
     var element = document.createElement(type);
 
     _.each(attributes, function(value, key) {
       element.setAttribute(key, value);
     });
 
-    if (!_.isUndefined(content)) {
-      var child = napricot.render(content);
-      element.appendChild(child);
-    }
+    _.each(children, function(child) {
+      element.appendChild(napricot.render(child));
+    });
 
     return element;
   }
@@ -25,19 +24,32 @@ napricot = (function() {
     return fixed;
   }
 
-  function fixAttributes(data) {
+  function withAttributes(data) {
     var attributesMaybe = data[1];
 
-    if(!_.isObject(attributesMaybe) || _.isArray(attributesMaybe)) {
-      return addBlankAttributes(data);
-    } else {
+    if(_.isObject(attributesMaybe) && !_.isArray(attributesMaybe)) {
       return data
+    } else {
+      return addBlankAttributes(data);
+    }
+  }
+
+  function withChildren(data) {
+    var type = data[0];
+    var attributes = data[1];
+    var children = data[2];
+
+    if(_.isObject(children) && !_.isArray(children)) {
+      return data;
+    } else {
+      var fixedChildren = data.slice(2, data.length);
+      var fixedElement = [type, attributes, {children: fixedChildren}]
+      return fixedElement;
     }
   }
 
   function renderElement(data) {
-    var withAttributes = fixAttributes(data);
-    return renderPerfectElement(withAttributes);
+    return renderPerfectElement(withChildren(withAttributes(data)));
   }
 
   napricot.render = function(data) {
