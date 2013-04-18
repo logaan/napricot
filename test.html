@@ -1,0 +1,12 @@
+<body>
+  <script src="underscore-min.js"></script>
+  <script src="napricot.js"></script>
+
+  <script>
+    body = document.getElementsByTagName("body")[0];
+    body.appendChild(napricot.render(["p", {id: 1}, "foo"]))
+    body.appendChild(napricot.render(["p", {id: 2}, ["span", {}, "foo"]]))
+    body.appendChild(napricot.render(["p", "foo"]))
+    body.appendChild(napricot.render(["hr"]))
+  </script>
+</body>
