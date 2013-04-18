@@ -4,9 +4,17 @@
 
   <script>
     body = document.getElementsByTagName("body")[0];
-    body.appendChild(napricot.render(["p", {id: 1}, "foo"]))
-    body.appendChild(napricot.render(["p", {id: 2}, ["span", {}, "foo"]]))
-    body.appendChild(napricot.render(["p", "foo"]))
-    body.appendChild(napricot.render(["hr"]))
+
+    function test(data) {
+      body.appendChild(napricot.render(data));
+    }
+
+    test(["a", {href: "#"}, "link"]);
+    test(["p", "paragraph"]);
+    test(["hr"]);
+
+    test(["p", ["a", {href: "#"}, "link in paragraph"]]);
+    test(["p", {id: "foo"}, ["a", {href: "#"}, "link in id paragraph"]]);
+    test(["p", {id: "foo"}, ["span", "span in paragraph"]]);
   </script>
 </body>

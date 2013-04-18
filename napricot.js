@@ -19,18 +19,25 @@ napricot = (function() {
     return element;
   }
 
-  function renderMaybeAttributelessElement(data) {
-    if(_.isObject(data[1])) {
-      return renderPerfectElement(data);
+  function addBlankAttributes(data) {
+    var fixed = _.clone(data);
+    fixed.splice(1, 0, {});
+    return fixed;
+  }
+
+  function fixAttributes(data) {
+    var attributesMaybe = data[1];
+
+    if(!_.isObject(attributesMaybe) || _.isArray(attributesMaybe)) {
+      return addBlankAttributes(data);
     } else {
-      var fixed = _.clone(data);
-      fixed.splice(1, 0, {});
-      return renderPerfectElement(fixed);
+      return data
     }
   }
 
   function renderElement(data) {
-    return renderMaybeAttributelessElement(data)
+    var withAttributes = fixAttributes(data);
+    return renderPerfectElement(withAttributes);
   }
 
   napricot.render = function(data) {
