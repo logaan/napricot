@@ -32,5 +32,15 @@
 
     // Nested with attr, child no attr
     test(["p", {id: "foo"}, ["span", "span in paragraph"]]);
+
+  </script>
+  <p>Kittens</p>
+  <script>
+    var start = new Date().getTime();
+    var data = ["p", {id: "foo"}, ["a", {href: "#"}, "link in id paragraph"]];
+    var results = []
+    _.times(10000, function() { results.push(napricot.render(data)); });
+    var elapsed = new Date().getTime() - start;
+    document.write(elapsed)
   </script>
 </body>
