@@ -5,36 +5,48 @@
   <script>
     body = document.getElementsByTagName("body")[0];
 
-    function test(data) {
-      body.appendChild(napricot.render(data));
+    function escapeHTML(element) {
+      var div = document.createElement('div');
+      div.appendChild(element);
+      return div.innerHTML;
+    }
+
+    function test(data, expected) {
+      var output = napricot.render(data);
+      if(!_.isEqual(escapeHTML(output), expected)) {
+        body.appendChild(output);
+      }
     }
 
     // Perfect
-    test(["a", {href: "#"}, {children: ["link"]}]);
+    test(["a", {href: "#"}, {children: ["link"]}], '<a href="#">link</a>');
 
     // Without children in a list
-    test(["a", {href: "#"}, "link"]);
+    test(["a", {href: "#"}, "link"], '<a href="#">link</a>');
 
     // Without attributes
-    test(["p", {children: ["paragraph"]}]);
+    test(["p", {children: ["paragraph"]}], '<p>paragraph</p>');
 
     // Without attributes or children in a list
-    test(["p", "paragraph"]);
+    test(["p", "paragraph"], '<p>paragraph</p>');
 
     // Number content
-    test(["p", 1]);
+    test(["p", 1], '<p>1</p>');
 
     // Without attributes or children
-    test(["hr"]);
+    test(["hr"], '<hr>');
 
     // Nested
-    test(["p", {id: "foo"}, ["a", {href: "#"}, "link in id paragraph"]]);
+    test(["p", {id: "foo"}, ["a", {href: "#"}, "link in id paragraph"]],
+         '<p id="foo"><a href="#">link in id paragraph</a></p>');
 
     // Nested without attr
-    test(["p", ["a", {href: "#"}, "link in paragraph"]]);
+    test(["p", ["a", {href: "#"}, "link in paragraph"]],
+         '<p><a href="#">link in paragraph</a></p>');
 
     // Nested with attr, child no attr
-    test(["p", {id: "foo"}, ["span", "span in paragraph"]]);
+    test(["p", {id: "foo"}, ["span", "span in paragraph"]],
+         '<p id="foo"><span>span in paragraph</span></p>');
 
   </script>
   <p>Kittens</p>
