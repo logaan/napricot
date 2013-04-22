@@ -14,6 +14,7 @@
     function test(data, expected) {
       var output = napricot.render(data);
       if(!_.isEqual(escapeHTML(output), expected)) {
+        body.appendChild(napricot.render(["strong", "Failed: "]));
         body.appendChild(output);
       }
     }
@@ -25,7 +26,7 @@
     test(["a", {href: "#"}, "link"], '<a href="#">link</a>');
 
     // Without attributes
-    test(["p", {children: ["paragraph"]}], '<p>paragraph</p>');
+    test(["p", {}, {children: ["paragraph"]}], '<p>paragraph</p>');
 
     // Without attributes or children in a list
     test(["p", "paragraph"], '<p>paragraph</p>');
