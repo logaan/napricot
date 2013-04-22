@@ -22,8 +22,6 @@
     // Without children in a list
     test(["a", {href: "#"}, "link"], '<a href="#">link</a>');
 
-    // Without attributes
-
     // Without attributes or children in a list
     test(["p", "paragraph"], '<p>paragraph</p>');
 
@@ -45,10 +43,18 @@
     test(["p", {id: "foo"}, ["span", "span in paragraph"]],
          '<p id="foo"><span>span in paragraph</span></p>');
 
+    // Undefined
     test(undefined, "");
 
+    // List of elements
     test([["br"], ["br"]], "<br><br>");
 
+    // Tricky mess of different child elements
+    test(["p", {}, [["span", "hi"], ["br"], "bye", ["hr"]]],
+         '<p><span>hi</span><br>bye<hr></p>');
+
+    // Deeply and unevenly nested elements
+    test([[[["br"]], ["br"]]], "<br><br>");
   </script>
   <p>Kittens</p>
   <script>
