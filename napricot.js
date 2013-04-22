@@ -4,7 +4,7 @@ napricot = (function() {
   function renderPerfectElement(data) {
     var type = data[0];
     var attributes = data[1];
-    var children = data[2].children;
+    var children = data[2];
     var element = document.createElement(type);
 
     _.each(attributes, function(value, key) {
@@ -34,17 +34,29 @@ napricot = (function() {
     }
   }
 
+  function isNapricotElement(data) {
+    return _.isArray(data) && _.isString(data[0]);
+  }
+
+  function wrapChild(data) {
+    var fixed = _.clone(data);
+    var newChildren = [];
+
+    if(!_.isUndefined(fixed[2])) {
+      newChildren.push(fixed[2]);
+    }
+
+    fixed[2] = newChildren;
+    return fixed
+  }
+
   function withChildren(data) {
-    var type = data[0];
-    var attributes = data[1];
     var children = data[2];
 
-    if(_.isObject(children) && !_.isArray(children)) {
+    if(_.isArray(children) && !isNapricotElement(data)) {
       return data;
     } else {
-      var fixedChildren = data.slice(2, data.length);
-      var fixedElement = [type, attributes, {children: fixedChildren}]
-      return fixedElement;
+      return wrapChild(data);
     }
   }
 
@@ -52,13 +64,27 @@ napricot = (function() {
     return renderPerfectElement(withChildren(withAttributes(data)));
   }
 
+  function renderElements(elements) {
+    var fragment = document.createDocumentFragment();
+    _.each(elements, function(element) {
+      fragment.appendChild(napricot.render(element));
+    });
+    return fragment;
+  }
+
   napricot.render = function(data) {
     if(_.isString(data)) {
       return document.createTextNode(data);
+    } else if(_.isUndefined(data)) {
+      return document.createTextNode("");
     } else if(_.isNumber(data)) {
       return document.createTextNode(data);
     } else if (_.isArray(data)) {
-      return renderElement(data);
+      if (_.isString(data[0])) {
+        return renderElement(data);
+      } else {
+        return renderElements(data);
+      }
     };
   };
 

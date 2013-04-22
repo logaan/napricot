@@ -19,14 +19,10 @@
       }
     }
 
-    // Perfect
-    test(["a", {href: "#"}, {children: ["link"]}], '<a href="#">link</a>');
-
     // Without children in a list
     test(["a", {href: "#"}, "link"], '<a href="#">link</a>');
 
     // Without attributes
-    test(["p", {}, {children: ["paragraph"]}], '<p>paragraph</p>');
 
     // Without attributes or children in a list
     test(["p", "paragraph"], '<p>paragraph</p>');
@@ -48,6 +44,10 @@
     // Nested with attr, child no attr
     test(["p", {id: "foo"}, ["span", "span in paragraph"]],
          '<p id="foo"><span>span in paragraph</span></p>');
+
+    test(undefined, "");
+
+    test([["br"], ["br"]], "<br><br>");
 
   </script>
   <p>Kittens</p>
