@@ -75,7 +75,7 @@ napricot = (function() {
   napricot.render = function(data) {
     if(_.isString(data)) {
       return document.createTextNode(data);
-    } else if(_.isUndefined(data)) {
+    } else if (_.isNaN(data)) {
       return document.createTextNode("");
     } else if(_.isNumber(data)) {
       return document.createTextNode(data);
@@ -85,6 +85,8 @@ napricot = (function() {
       } else {
         return renderElements(data);
       }
+    } else {
+      return document.createTextNode("");
     };
   };
 
